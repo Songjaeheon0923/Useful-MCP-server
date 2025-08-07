@@ -117,7 +117,7 @@ claude mcp list  # User Scope 서버들이 모든 곳에서 보여야 함
 - **기능**: 복잡한 작업을 논리적 단계로 분해하여 아키텍처, 리팩토링, 계획 수립
 - **설명**: 복잡한 프로젝트 관리에 유용
 
-### 💼 생산성 도구
+### 생산성 도구
 
 #### 8. Memory Bank Server
 - **기능**: 대규모 프로젝트 및 복잡한 로직 관리
@@ -126,14 +126,14 @@ claude mcp list  # User Scope 서버들이 모든 곳에서 보여야 함
 
 ## 특수 목적 서버들
 
-### 📊 분석 & 모니터링
+### 분석 & 모니터링
 
 #### AgentOps
 - **기능**: AI 에이전트 디버깅을 위한 관찰성 및 추적
 
 ## 클라우드 서비스 통합
 
-### ☁️ Alibaba Cloud
+### Alibaba Cloud
 - AnalyticDB for MySQL
 - AnalyticDB for PostgreSQL
 - DataWorks
