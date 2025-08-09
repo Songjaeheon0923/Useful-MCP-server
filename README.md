@@ -1,10 +1,10 @@
 # Useful MCP Servers for Claude Code
 
-Claude CLI와 함께 사용할 수 있는 유용한 MCP (Model Context Protocol) 서버들을 정리한 종합 가이드입니다.
+Claude CLI와 함께 사용할 수 있는 유용한 MCP (Model Context Protocol) 서버들을 정리한 종합 가이드
 
 ## MCP란?
 
-MCP (Model Context Protocol)는 Claude가 외부 도구, API, 데이터베이스, 서비스와 실시간으로 상호작용할 수 있게 해주는 프로토콜입니다. MCP 서버들은 Claude Code를 동적이고 컨텍스트 인식이 가능한 어시스턴트로 변환시켜, 터미널을 떠나지 않고도 작업을 자동화하고 워크플로우를 간소화할 수 있게 해줍니다.
+MCP (Model Context Protocol)는 Claude가 외부 도구, API, 데이터베이스, 서비스와 실시간으로 상호작용할 수 있게 해주는 프로토콜 MCP 서버들은 Claude Code를 동적이고 컨텍스트 인식이 가능한 어시스턴트로 변환시켜, 터미널을 떠나지 않고도 작업을 자동화하고 워크플로우를 간소화할 수 있게 해준다.
 
 ## 빠른 시작
 
@@ -15,7 +15,7 @@ MCP (Model Context Protocol)는 Claude가 외부 도구, API, 데이터베이스
 ### 원클릭 설치 
 
 <details>
-<summary>🚀 검증된 모든 MCP 서버 한번에 설치</summary>
+<summary> 검증된 모든 MCP 서버 한번에 설치</summary>
 
 다음 명령어들로 검증된 MCP 서버들을 User Scope으로 설정할 수 있습니다:
 
@@ -55,79 +55,20 @@ claude mcp list
 
 현재 **7개의 검증된 MCP 서버**가 사용 가능합니다:
 
-| 서버 | 패키지 | 주요 기능 | 문서 |
-|------|--------|----------|------|
-| 🗂️ **Filesystem** | `@modelcontextprotocol/server-filesystem` | 파일 시스템 관리, 검색, 편집 | [📖 상세 가이드](docs/servers/filesystem.md) |
-| 🐙 **GitHub** | `@modelcontextprotocol/server-github` | GitHub API 통합, 이슈/PR 관리 | [📖 상세 가이드](docs/servers/github.md) |
-| 🧠 **Memory** | `@modelcontextprotocol/server-memory` | 지식 그래프, 대화 기록 유지 | [📖 상세 가이드](docs/servers/memory.md) |
-| 🤔 **Sequential Thinking** | `@modelcontextprotocol/server-sequential-thinking` | 구조화된 사고 과정, 문제 해결 | [📖 상세 가이드](docs/servers/sequential-thinking.md) |
-| 🎨 **Figma** | `figma-developer-mcp` | 디자인-투-코드 변환, 에셋 관리 | [📖 상세 가이드](docs/servers/figma.md) |
-| 🌐 **Puppeteer** | `@hisma/server-puppeteer` | 브라우저 자동화, 웹 스크래핑 | [📖 상세 가이드](docs/servers/puppeteer.md) |
-| 📝 **Notion** | `@notionhq/notion-mcp-server` | Notion 워크스페이스 통합 | [📖 상세 가이드](docs/servers/notion.md) |
+| 서버 | 주요 기능 | readme |
+|------|----------|------|
+| 🗂️ **Filesystem** | 파일 시스템 관리, 검색, 편집 | [link](docs/servers/filesystem.md) |
+| 🐙 **GitHub** | GitHub API 통합, 이슈/PR 관리 | [link](docs/servers/github.md) |
+| 🧠 **Memory** | 지식 그래프, 대화 기록 유지 | [link](docs/servers/memory.md) |
+| 🤔 **Sequential Thinking** | 구조화된 사고 과정, 문제 해결 | [link](docs/servers/sequential-thinking.md) |
+| 🎨 **Figma** | 디자인-투-코드 변환, 에셋 관리 | [link](docs/servers/figma.md) |
+| 🌐 **Puppeteer** | 브라우저 자동화, 웹 스크래핑 | [link](docs/servers/puppeteer.md) |
+| 📝 **Notion** | Notion 워크스페이스 통합 | [link](docs/servers/notion.md) |
 
 ### 🔄 실험적 서버들
-테스트가 필요하거나 개발 중인 MCP 서버들: [📋 실험적 서버 목록](docs/experimental-servers.md)
+테스트가 필요하거나 개발 중인 MCP 서버들: [미실현 서버 목록](docs/experimental-servers.md)
 
-## 🚀 인기 있는 사용 사례
 
-### 개발자 워크플로우
-- **코드 리뷰 자동화**: GitHub MCP로 PR 자동 리뷰 및 피드백
-- **디자인-투-코드**: Figma MCP로 디자인을 실제 React/Vue 컴포넌트로 변환
-- **프로젝트 문서화**: Memory MCP로 프로젝트 지식 체계화
-- **테스트 자동화**: Puppeteer MCP로 웹 애플리케이션 자동 테스트
-
-### 비즈니스 자동화
-- **프로젝트 관리**: Notion MCP로 작업 추적 및 리포팅 자동화
-- **경쟁사 모니터링**: Puppeteer MCP로 경쟁사 웹사이트 변화 추적
-- **고객 지원**: 다중 MCP 서버 조합으로 고객 이슈 자동 분류 및 대응
-
-### 콘텐츠 관리
-- **소셜 미디어 관리**: 여러 플랫폼의 콘텐츠 수집 및 분석
-- **SEO 최적화**: 웹사이트 성능 모니터링 및 개선 제안
-- **브랜드 모니터링**: 온라인 브랜드 언급 추적 및 분석
-
-## 🔧 환경 변수 설정
-
-토큰이 필요한 서버들의 설정 가이드:
-
-<details>
-<summary>🔑 GitHub Personal Access Token</summary>
-
-```bash
-# 1. GitHub에서 토큰 생성
-# https://github.com/settings/tokens
-
-# 2. Windows에서 환경 변수 설정
-setx GITHUB_PERSONAL_ACCESS_TOKEN "your-token-here"
-```
-[👆 상세한 GitHub 토큰 설정 가이드](docs/servers/github.md#설치-및-설정)
-</details>
-
-<details>
-<summary>🎨 Figma API Token</summary>
-
-```bash
-# 1. Figma에서 토큰 생성
-# https://www.figma.com/developers/api#access-tokens
-
-# 2. MCP 서버에 토큰 포함하여 설치
-claude mcp add figma-framelink --scope user "npx figma-developer-mcp --figma-api-key=figd_YOUR_TOKEN --stdio"
-```
-[👆 상세한 Figma 토큰 설정 가이드](docs/servers/figma.md#설치-및-설정)
-</details>
-
-<details>
-<summary>📝 Notion Integration Token</summary>
-
-```bash
-# 1. Notion에서 통합 생성
-# https://www.notion.so/my-integrations
-
-# 2. MCP 서버에 토큰 포함하여 설치
-claude mcp add notion-server --scope user npx @notionhq/notion-mcp-server -e NOTION_TOKEN=secret_YOUR_TOKEN
-```
-[👆 상세한 Notion 토큰 설정 가이드](docs/servers/notion.md#설치-및-설정)
-</details>
 
 ## 🛠 MCP 서버 관리
 
@@ -158,11 +99,6 @@ claude mcp remove <서버이름> -s user
 - **토큰 인증 오류**: 환경 변수나 토큰이 올바르게 설정되었는지 확인
 - **권한 오류**: 파일 시스템 접근 권한이나 API 토큰 권한 확인
 
-### 도움 받기
-- **Claude Code 도움말**: `claude --help`
-- **MCP 서버 도움말**: `claude mcp --help`
-- **이슈 리포트**: [GitHub Issues](https://github.com/anthropics/claude-code/issues)
-
 ## 🤝 기여하기
 
 ### 새로운 MCP 서버 제안
@@ -178,9 +114,7 @@ claude mcp remove <서버이름> -s user
 ## 📚 참고 자료
 
 - [Claude Code 공식 문서](https://docs.anthropic.com/en/docs/claude-code)
-- [MCP 사양 문서](https://github.com/modelcontextprotocol/specification)
-- [Awesome MCP Servers (wong2)](https://github.com/wong2/awesome-mcp-servers)
-- [Awesome MCP Servers (punkpeye)](https://github.com/punkpeye/awesome-mcp-servers)
+
 
 ## 📊 프로젝트 상태
 
@@ -188,8 +122,3 @@ claude mcp remove <서버이름> -s user
 **테스트 환경**: Windows, Claude CLI  
 **검증된 서버 수**: 7개  
 **실험적 서버 수**: 5+개  
-**기여자**: 커뮤니티 기여 환영 🙌
-
----
-
-💡 **팁**: MCP 서버들을 조합해서 사용하면 더욱 강력한 자동화 워크플로우를 만들 수 있습니다. 예를 들어, Figma에서 디자인을 가져와 코드로 변환한 후, GitHub에 자동으로 커밋하고, Notion에 작업 내역을 기록하는 전체 워크플로우가 가능합니다!

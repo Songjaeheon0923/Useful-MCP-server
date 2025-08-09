@@ -12,9 +12,6 @@ Notion MCP Server는 Claude가 Notion 워크스페이스와 완전히 통합되�
 
 ### 1. Notion 통합 생성
 
-<details>
-<summary>📝 Notion 통합 설정 가이드</summary>
-
 #### 통합 생성
 1. [Notion Integrations](https://www.notion.so/my-integrations) 페이지 이동
 2. **"New integration"** 클릭
@@ -33,11 +30,28 @@ Notion MCP Server는 Claude가 Notion 워크스페이스와 완전히 통합되�
 - ✅ **Read comments**: 댓글 읽기
 - ✅ **Create comments**: 댓글 작성
 
-#### 토큰 획득
+#### 토큰 획득 및 환경 변수 설정
 4. **Submit** 클릭하여 통합 생성
 5. **Internal Integration Token** 복사 (secret_으로 시작)
-6. 안전한 곳에 토큰 보관 ⚠️ **토큰을 공유하지 마세요!**
-</details>
+6. 환경 변수로 토큰 설정:
+
+```bash
+# Windows에서 환경 변수 설정
+setx NOTION_TOKEN "secret_your-notion-token-here"
+
+# Linux/macOS
+export NOTION_TOKEN="secret_your-notion-token-here"
+
+# 영구 설정 (Linux/macOS)
+echo 'export NOTION_TOKEN="secret_your-notion-token-here"' >> ~/.bashrc
+source ~/.bashrc
+
+# 설정 확인
+echo %NOTION_TOKEN%  # Windows
+echo $NOTION_TOKEN   # Linux/macOS
+```
+
+⚠️ **토큰을 공유하지 마세요!** 이 토큰으로 워크스페이스의 모든 연결된 페이지에 접근할 수 있습니다.
 
 ### 2. 워크스페이스 연결
 
@@ -62,8 +76,14 @@ Notion MCP Server는 Claude가 Notion 워크스페이스와 완전히 통합되�
 
 ### 3. MCP 서버 추가
 ```bash
+# 환경 변수를 사용한 설치 (권장)
+claude mcp add notion-server --scope user npx @notionhq/notion-mcp-server
+
+# 또는 직접 토큰 지정 (덜 안전함)
 claude mcp add notion-server --scope user npx @notionhq/notion-mcp-server -e NOTION_TOKEN=secret_YOUR_ACTUAL_TOKEN_HERE
 ```
+
+**권장사항**: 환경 변수를 사용하면 명령어 이력에 토큰이 남지 않아 더 안전합니다.
 
 ### 4. 연결 확인
 ```bash

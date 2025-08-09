@@ -17,9 +17,6 @@ claude mcp add github --scope user npx @modelcontextprotocol/server-github
 
 ### 2. GitHub Personal Access Token 설정
 
-<details>
-<summary>🔧 GitHub 토큰 생성 가이드</summary>
-
 #### GitHub 토큰 생성
 1. [GitHub Settings > Personal Access Tokens](https://github.com/settings/tokens) 이동
 2. **"Generate new token (classic)"** 클릭
@@ -40,8 +37,14 @@ set GITHUB_PERSONAL_ACCESS_TOKEN=your-github-token-here
 
 # 설정 확인
 echo %GITHUB_PERSONAL_ACCESS_TOKEN%
+
+# Linux/macOS
+export GITHUB_PERSONAL_ACCESS_TOKEN="your-github-token-here"
+
+# 영구 설정 (Linux/macOS)
+echo 'export GITHUB_PERSONAL_ACCESS_TOKEN="your-github-token-here"' >> ~/.bashrc
+source ~/.bashrc
 ```
-</details>
 
 ### 3. 연결 확인
 ```bash

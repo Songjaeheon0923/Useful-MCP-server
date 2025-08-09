@@ -12,9 +12,6 @@ Figma MCP Server는 Figma 디자인을 실제 코드로 변환하는 혁신적�
 
 ### 1. Figma Personal Access Token 생성
 
-<details>
-<summary>🎨 Figma 토큰 생성 가이드</summary>
-
 #### 단계별 설정
 1. [Figma](https://www.figma.com) 로그인
 2. **Settings** → **Personal Access Tokens** 이동
@@ -26,7 +23,19 @@ Figma MCP Server는 Figma 디자인을 실제 코드로 변환하는 혁신적�
 - **File access**: 팀 또는 개인 파일 접근
 - **Team library access**: 디자인 시스템 컴포넌트 접근
 - **Webhooks**: 실시간 변경 알림 (선택사항)
-</details>
+
+#### 환경 변수 설정 (선택사항)
+```bash
+# Windows에서 환경 변수로 관리하려면
+setx FIGMA_ACCESS_TOKEN "figd_your-token-here"
+
+# Linux/macOS
+export FIGMA_ACCESS_TOKEN="figd_your-token-here"
+
+# 영구 설정 (Linux/macOS)
+echo 'export FIGMA_ACCESS_TOKEN="figd_your-token-here"' >> ~/.bashrc
+source ~/.bashrc
+```
 
 ### 2. MCP 서버 추가
 ```bash
