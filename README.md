@@ -8,9 +8,9 @@ MCP (Model Context Protocol)는 Claude가 외부 도구, API, 데이터베이스
 
 ### MCP 서버 연결 범위 (Scope)
 
-Claude Code는 3가지 범위에서 MCP 서버를 설정할 수 있다:
+Claude Code는 3가지 범위에서 MCP 서버를 설정할 수 있지만 본인은 로컬 전역 범위로만 설정함
 
-#### 1. **User Scope (추천)** - 모든 프로젝트에서 사용
+#### 1. **User Scope** - 모든 프로젝트에서 사용
 ```bash
 # 모든 프로젝트에서 사용할 수 있는 글로벌 서버
 claude mcp add <서버이름> --scope user <명령어> [인수...]
@@ -167,42 +167,280 @@ claude mcp list  # User Scope 서버들이 모든 곳에서 보여야 함
 
 ### 🐙 GitHub MCP Server
 - **상태**: **연결됨**
-- **기능**: GitHub API 연결로 이슈 읽기, PR 관리, CI/CD 트리거, 커밋 분석
+- **패키지**: `@modelcontextprotocol/server-github`
 - **GitHub**: [Official GitHub MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/github)
-- **사용법**: GitHub 토큰으로 인증 후 리포지토리와 상호작용
+- **기능**: 완전한 GitHub API 통합
 
-### 📁 File System Server
+<details>
+<summary>🚀 주요 기능</summary>
+
+**📊 리포지토리 관리:**
+- **리포지토리 CRUD**: 생성, 포크, 검색, 메타데이터 조회
+- **파일 관리**: 단일/다중 파일 생성, 업데이트, 읽기
+- **브랜치 관리**: 새 브랜치 생성, 전환, 커밋 히스토리 조회
+- **콘텐츠 검색**: 코드, 이슈, PR, 사용자 검색
+
+**🔧 이슈 및 PR 관리:**
+- **이슈 관리**: 생성, 업데이트, 댓글 추가, 라벨/마일스톤 설정
+- **풀 리퀘스트**: 생성, 리뷰, 머지, 상태 확인
+- **코드 리뷰**: 리뷰 작성, 댓글 추가, 승인/변경요청
+- **자동화**: 상태 체크, CI/CD 트리거
+</details>
+
+<details>
+<summary>📋 사용 가능한 도구들</summary>
+
+**리포지토리 관리:**
+- `create_repository`: 새 리포지토리 생성
+- `search_repositories`: 리포지토리 검색
+- `fork_repository`: 리포지토리 포크
+- `get_file_contents`: 파일 내용 조회
+- `create_or_update_file`: 파일 생성/업데이트
+- `push_files`: 여러 파일 한 번에 커밋
+
+**이슈 관리:**
+- `create_issue`: 새 이슈 생성
+- `list_issues`: 이슈 목록 조회 (필터링 지원)
+- `get_issue`: 특정 이슈 상세 조회
+- `update_issue`: 이슈 업데이트
+- `add_issue_comment`: 이슈에 댓글 추가
+
+**풀 리퀘스트:**
+- `create_pull_request`: PR 생성
+- `list_pull_requests`: PR 목록 조회
+- `get_pull_request`: PR 상세 정보
+- `get_pull_request_files`: PR 변경 파일 목록
+- `create_pull_request_review`: PR 리뷰 작성
+- `merge_pull_request`: PR 머지
+
+**검색 기능:**
+- `search_code`: 코드 검색
+- `search_issues`: 이슈/PR 검색
+- `search_users`: 사용자 검색
+</details>
+
+<details>
+<summary>📝 사용 예시</summary>
+
+```bash
+# Claude에서 사용 예시:
+"이 리포지토리의 모든 열린 이슈를 우선순위별로 정렬해서 보여주세요"
+"main 브랜치에서 feature/new-auth 브랜치를 생성해주세요"
+"이 PR을 검토하고 코드 리뷰를 작성해주세요"
+"최근 일주일간의 커밋을 분석해서 변경사항을 요약해주세요"
+"버그 리포트 이슈를 생성하고 적절한 라벨을 추가해주세요"
+"이 파일을 여러 브랜치에 동시에 업데이트해주세요"
+```
+
+**⚡ 자동화 워크플로우 예시:**
+- 이슈 트리거 기반 자동 PR 생성
+- 코드 리뷰 자동화 및 피드백
+- 릴리스 노트 자동 생성
+- CI/CD 파이프라인 상태 모니터링
+- 프로젝트 메트릭 수집 및 보고서 생성
+</details>
+
+### 📁 File System Server  
 - **상태**: **연결됨**
-- **기능**: 파일 읽기/쓰기/편집, 프로젝트 관리, 로그 분석
+- **패키지**: `@modelcontextprotocol/server-filesystem`
 - **GitHub**: [Filesystem MCP](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem)
-- **사용법**: 안전한 파일 작업을 위한 구성 가능한 액세스 제어
+- **기능**: 안전하고 강력한 파일 시스템 관리
+
+<details>
+<summary>🚀 주요 기능</summary>
+
+**📂 파일 관리:**
+- **파일 CRUD**: 생성, 읽기, 수정, 삭제, 이동/이름변경
+- **디렉토리 관리**: 생성, 나열, 트리 구조 조회
+- **다중 파일 처리**: 여러 파일 동시 읽기 및 배치 작업
+- **메타데이터**: 파일 크기, 수정일, 권한 등 상세 정보
+
+**🔍 검색 및 탐색:**
+- **패턴 기반 검색**: 파일명 및 경로 패턴 매칭
+- **재귀 검색**: 하위 디렉토리 포함 전체 검색
+- **제외 패턴**: 불필요한 파일/디렉토리 필터링
+- **크기별 정렬**: 파일 크기 기준 정렬 및 분석
+</details>
+
+<details>
+<summary>📋 사용 가능한 도구들</summary>
+
+- `read_text_file`: 텍스트 파일 읽기 (부분 읽기 지원)
+- `read_multiple_files`: 여러 파일 동시 읽기  
+- `write_file`: 파일 생성/덮어쓰기
+- `edit_file`: 라인 기반 파일 편집
+- `create_directory`: 디렉토리 생성
+- `list_directory`: 디렉토리 내용 나열
+- `list_directory_with_sizes`: 크기 정보 포함 나열
+- `directory_tree`: 재귀적 트리 구조 조회
+- `move_file`: 파일/디렉토리 이동/이름변경
+- `search_files`: 패턴 기반 파일 검색
+- `get_file_info`: 파일 메타데이터 조회
+</details>
+
+<details>
+<summary>📝 사용 예시</summary>
+
+```bash
+# Claude에서 사용 예시:
+"프로젝트의 모든 .py 파일에서 deprecated 함수를 찾아주세요"
+"이 디렉토리를 정리해서 파일을 용도별로 분류해주세요"
+"로그 파일들을 크기별로 정렬하고 가장 큰 10개 파일을 보여주세요"
+"이 설정 파일의 특정 값을 모든 환경에서 동일하게 업데이트해주세요"
+"백업 파일들 중 30일 이상 된 파일들을 찾아주세요"
+```
+</details>
 
 ### 🧠 Memory Server
-- **상태**: **연결됨**
-- **기능**: 대화 기록 및 컨텍스트 유지, 프로젝트 상태 관리
+- **상태**: **연결됨**  
+- **패키지**: `@modelcontextprotocol/server-memory`
 - **GitHub**: [Memory MCP](https://github.com/modelcontextprotocol/servers/tree/main/src/memory)
-- **사용법**: 세션 간 정보 유지 및 지식 그래프 생성
+- **기능**: 지속적인 기억과 컨텍스트 관리
+
+<details>
+<summary>🚀 주요 기능</summary>
+
+**🧩 지식 그래프:**
+- **엔티티 관리**: 사람, 프로젝트, 개념 등 구조화된 정보 저장
+- **관계 매핑**: 엔티티 간 복잡한 관계 정의 및 탐색
+- **관찰 기록**: 각 엔티티에 대한 시간순 관찰 사항 누적
+- **컨텍스트 유지**: 대화 세션 간 정보 연속성 보장
+
+**🔍 스마트 검색:**
+- **의미론적 검색**: 키워드뿐만 아니라 의미 기반 검색
+- **관계 추론**: 직간접적 연결 관계를 통한 정보 발견
+- **시간적 추적**: 정보 변화 과정 및 히스토리 추적
+- **자동 분류**: 유사한 패턴 및 주제별 자동 그룹핑
+</details>
+
+<details>
+<summary>📋 사용 가능한 도구들</summary>
+
+- `create_entities`: 새로운 엔티티 생성 (여러 개 동시 생성)
+- `create_relations`: 엔티티 간 관계 정의
+- `add_observations`: 기존 엔티티에 새 관찰 사항 추가
+- `delete_entities`: 엔티티 및 관련 관계 삭제
+- `delete_observations`: 특정 관찰 사항 삭제
+- `delete_relations`: 엔티티 간 관계 삭제
+- `read_graph`: 전체 지식 그래프 조회
+- `search_nodes`: 패턴 기반 노드 검색
+- `open_nodes`: 특정 엔티티들의 상세 정보 조회
+</details>
+
+<details>
+<summary>📝 사용 예시</summary>
+
+```bash
+# Claude에서 사용 예시:
+"프로젝트 A와 관련된 모든 사람과 기술을 기록해주세요"
+"지금까지 논의한 API 설계 요구사항들을 정리해서 저장해주세요"  
+"이전에 언급한 성능 이슈와 관련된 모든 정보를 찾아주세요"
+"팀 멤버들의 전문 분야와 담당 업무를 매핑해주세요"
+"이 버그와 유사한 과거 이슈들을 찾아서 해결 방안을 제안해주세요"
+```
+</details>
 
 ### 🤔 Sequential Thinking Server
 - **상태**: **연결됨**
-- **기능**: 복잡한 작업을 논리적 단계로 분해하여 아키텍처, 리팩토링, 계획 수립
+- **패키지**: `@modelcontextprotocol/server-sequential-thinking`  
 - **GitHub**: [Sequential Thinking MCP](https://github.com/modelcontextprotocol/servers/tree/main/src/sequential-thinking)
-- **사용법**: 복잡한 프로젝트 관리 및 문제 해결에 유용
+- **기능**: 구조화된 사고 과정 및 문제 해결
+
+<details>
+<summary>🚀 주요 기능</summary>
+
+**🧠 체계적 사고:**
+- **단계별 분해**: 복잡한 문제를 논리적 단계로 체계화
+- **가설 검증**: 가정 설정 → 검증 → 수정의 반복 과정
+- **다각적 분석**: 여러 관점에서 문제 접근 및 분석
+- **동적 조정**: 사고 과정 중 방향 전환 및 깊이 조절
+
+**🔄 적응형 프로세스:**
+- **브랜치 사고**: 여러 해결 경로 동시 탐색
+- **백트래킹**: 막다른 길에서 이전 단계로 돌아가기
+- **점진적 개선**: 초기 해결책을 지속적으로 정교화
+- **불확실성 관리**: 확신이 없는 부분을 명시적으로 표현
+</details>
+
+<details>
+<summary>📋 사용 가능한 도구들</summary>
+
+- `sequentialthinking`: 구조화된 사고 과정 실행
+  - `thought`: 현재 사고 단계 내용
+  - `thoughtNumber`: 현재 사고 단계 번호  
+  - `totalThoughts`: 예상 총 사고 단계 수
+  - `nextThoughtNeeded`: 추가 사고 단계 필요 여부
+  - `isRevision`: 이전 사고 수정 여부
+  - `revisesThought`: 수정하는 사고 단계 번호
+  - `branchFromThought`: 분기점 사고 단계
+  - `branchId`: 분기 식별자
+</details>
+
+<details>  
+<summary>📝 사용 예시</summary>
+
+```bash
+# Claude에서 사용 예시:
+"이 아키텍처 설계를 단계별로 검토하고 개선점을 찾아주세요"
+"복잡한 알고리즘 문제를 체계적으로 분해해서 해결해주세요"
+"이 비즈니스 요구사항을 기술적 구현 계획으로 변환해주세요"
+"여러 기술 선택지를 비교 분석해서 최적의 솔루션을 제안해주세요"
+"이 버그의 근본 원인을 논리적으로 추적해서 찾아주세요"
+```
+
+**⚡ 적용 영역:**
+- 시스템 설계 및 아키텍처 계획
+- 복잡한 디버깅 및 문제 해결  
+- 프로젝트 계획 수립 및 리스크 분석
+- 코드 리팩토링 전략 수립
+- 기술 의사결정 프로세스
+</details>
 
 ### 🎨 Figma MCP Server (Framelink)
 - **상태**: **연결됨**
-- **기능**: Figma 디자인을 코드로 자동 변환, 디자인 시스템 통합
-- **GitHub**: [Figma Context MCP](https://github.com/GLips/Figma-Context-MCP)
 - **패키지**: `figma-developer-mcp`
+- **GitHub**: [Figma Context MCP](https://github.com/GLips/Figma-Context-MCP)
+- **기능**: 디자인을 코드로 변환하는 고급 Figma 통합
 
-**🚀 주요 기능:**
-- **디자인-투-코드 변환**: Figma 프레임을 HTML/CSS, React, Vue, Angular 등으로 원샷 변환
-- **스마트 분석**: 복잡한 Figma API 응답을 AI가 이해하기 쉬운 레이아웃/스타일 정보로 단순화
-- **이미지 자동화**: 디자인 내 모든 이미지를 PNG/JPG/SVG로 자동 다운로드 및 최적화
-- **컴포넌트 추출**: Figma 컴포넌트와 스타일 가이드를 재사용 가능한 코드 컴포넌트로 변환
-- **반응형 지원**: 다양한 화면 크기에 맞는 CSS Grid/Flexbox 및 미디어 쿼리 자동 생성
+<details>
+<summary>🚀 주요 기능</summary>
 
-**🔧 고급 설정 옵션:**
+**🎨 디자인-투-코드 변환:**
+- **다중 프레임워크 지원**: HTML/CSS, React, Vue, Angular, Svelte 등으로 변환
+- **스마트 레이아웃 분석**: Figma Auto Layout을 CSS Grid/Flexbox로 자동 변환
+- **반응형 디자인**: 다양한 화면 크기에 맞는 미디어 쿼리 자동 생성
+- **컴포넌트 시스템**: Figma 컴포넌트를 재사용 가능한 코드 컴포넌트로 변환
+
+**📊 디자인 시스템 분석:**
+- **스타일 토큰 추출**: 색상, 타이포그래피, 간격 등을 CSS 변수로 변환
+- **컴포넌트 라이브러리**: 디자인 시스템의 모든 컴포넌트를 코드로 생성
+- **일관성 검사**: 디자인 시스템 내 스타일 일관성 검증
+- **변경 사항 추적**: 디자인 업데이트 시 코드 동기화
+
+**🖼️ 에셋 관리:**
+- **자동 이미지 최적화**: PNG, JPG, SVG 형식으로 자동 추출 및 최적화
+- **아이콘 시스템**: SVG 아이콘을 컴포넌트화하여 관리
+- **이미지 크롭**: 정확한 크기와 비율로 이미지 자동 크롭
+- **리소스 번들링**: 모든 에셋을 프로젝트 구조에 맞게 조직화
+</details>
+
+<details>
+<summary>📋 사용 가능한 도구들</summary>
+
+- `get_figma_data`: 전체 Figma 파일 또는 특정 노드 분석
+- `download_figma_images`: 이미지 및 아이콘 자동 다운로드 및 최적화
+
+**설정 옵션:**
+- `fileKey`: Figma 파일 키 (URL에서 추출)
+- `nodeId`: 특정 노드/프레임 ID (선택적)
+- `depth`: 노드 트리 탐색 깊이 제어
+- `localPath`: 이미지 저장 경로
+- `pngScale`: PNG 이미지 스케일 (기본값: 2)
+</details>
+
+<details>
+<summary>🔧 고급 설정 옵션</summary>
+
 ```bash
 # 기본 설정 (YAML 형식)
 claude mcp add figma-framelink --scope user "npx figma-developer-mcp --figma-api-key=YOUR_TOKEN --stdio"
@@ -216,27 +454,30 @@ claude mcp add figma-light --scope user "npx figma-developer-mcp --figma-api-key
 # OAuth 토큰 사용 (팀/조직 계정용)
 claude mcp add figma-oauth --scope user "npx figma-developer-mcp --figma-oauth-token=YOUR_OAUTH_TOKEN --stdio"
 ```
+</details>
 
-**📋 사용 가능한 도구들:**
-1. **`get_figma_file`**: 전체 Figma 파일 분석 및 구조 파악
-2. **`get_figma_frame`**: 특정 프레임의 상세 디자인 정보 추출
-3. **`download_figma_images`**: 디자인 내 모든 이미지 자동 다운로드
-4. **`analyze_design_system`**: 컴포넌트, 스타일, 토큰 시스템 분석
-5. **`convert_to_code`**: 다양한 프레임워크로 코드 변환
+<details>
+<summary>📝 사용 예시</summary>
 
-**📝 사용 예시:**
 ```bash
-# Claude에서 사용
+# Claude에서 사용 예시:
 "이 Figma 파일을 React 컴포넌트로 변환해주세요: https://www.figma.com/file/abc123/MyDesign"
 "이 프레임의 CSS를 Tailwind CSS로 생성해주세요"
 "디자인 시스템에서 버튼 컴포넌트만 추출해서 코드로 만들어주세요"
+"모든 아이콘을 SVG로 다운로드하고 React 컴포넌트로 만들어주세요"
+"이 페이지 디자인을 반응형 HTML로 변환해주세요"
+"Figma 컴포넌트 라이브러리를 Storybook으로 생성해주세요"
 ```
 
-## 🔄 테스트 필요한 MCP 서버들
+**⚡ 자동화 워크플로우 예시:**
+- 디자인 시스템 업데이트 시 자동 코드 동기화
+- Figma → GitHub PR 자동 생성
+- 디자인 토큰 자동 추출 및 스타일 가이드 생성
+- 프로토타입을 실제 작동하는 코드로 변환
+- A/B 테스트용 다중 디자인 버전 코드 생성
+</details>
 
-### 개발 도구
-
-### 🌐 Puppeteer MCP Server (Browser Automation)
+### 🌐 Puppeteer MCP Server
 - **상태**: **연결됨**
 - **패키지**: `@hisma/server-puppeteer`
 - **GitHub**: [Puppeteer MCP Server](https://github.com/hisma/server-puppeteer)
@@ -384,6 +625,10 @@ claude mcp add figma-oauth --scope user "npx figma-developer-mcp --figma-oauth-t
 - 마감일 알림 및 상태 변경 자동화
 - 회의록 템플릿 자동 생성 및 참석자 태그
 </details>
+
+## 🔄 테스트 필요한 MCP 서버들
+
+### 개발 도구
 
 #### Fetch Server
 - **상태**: ⚠️ **패키지 미존재** (`@modelcontextprotocol/server-fetch` 찾을 수 없음)
