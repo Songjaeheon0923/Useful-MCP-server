@@ -59,26 +59,48 @@ claude mcp add sequential-thinking --scope user npx @modelcontextprotocol/server
 # 5. Figma 서버 (디자인-투-코드 변환 
 # Figma 개인 액세스 토큰으로 YOUR_FIGMA_TOKEN을 교체
 claude mcp add figma-framelink --scope user "npx figma-developer-mcp --figma-api-key=YOUR_FIGMA_TOKEN --stdio"
+
+# 6. Puppeteer 서버 (브라우저 자동화)
+claude mcp add puppeteer-server --scope user npx @hisma/server-puppeteer
+
+# 7. Notion 서버 (Notion 워크스페이스 통합)
+# Notion 통합 토큰으로 YOUR_NOTION_TOKEN을 교체
+claude mcp add notion-server --scope user npx @notionhq/notion-mcp-server -e NOTION_TOKEN=YOUR_NOTION_TOKEN
 ```
 
 ### 환경 변수 설정
 
-#### GitHub 토큰 설정
+<details>
+<summary>🔧 GitHub 토큰 설정</summary>
+
+#### GitHub 토큰 생성
+1. [GitHub Settings > Personal Access Tokens](https://github.com/settings/tokens) 이동
+2. **"Generate new token (classic)"** 클릭
+3. 필요한 권한 선택:
+   - `repo`: 리포지토리 액세스
+   - `user`: 사용자 정보 읽기
+   - `workflow`: GitHub Actions 관리
+4. 생성된 토큰 복사
+
 ```bash
 # Windows에서 영구적으로 설정
 setx GITHUB_PERSONAL_ACCESS_TOKEN "your-github-token-here"
+
+# 현재 세션에서만 설정 (임시)
+set GITHUB_PERSONAL_ACCESS_TOKEN=your-github-token-here
 ```
+</details>
 
-#### Figma 토큰 설정
+<details>
+<summary>🎨 Figma 토큰 설정</summary>
 
-**1단계: Figma 개인 액세스 토큰 생성**
+#### Figma 토큰 생성
 1. [Figma](https://www.figma.com) 로그인
 2. **Settings** → **Personal Access Tokens** 이동
 3. **Generate new token** 클릭
 4. 토큰 이름 입력 (예: "Claude MCP")
 5. 생성된 토큰 복사 (⚠️ 한 번만 표시됨!)
 
-**2단계: 토큰으로 서버 설정**
 ```bash
 # 위에서 복사한 토큰으로 교체
 claude mcp add figma-framelink --scope user "npx figma-developer-mcp --figma-api-key=figd_YOUR_ACTUAL_TOKEN_HERE --stdio"
@@ -86,6 +108,34 @@ claude mcp add figma-framelink --scope user "npx figma-developer-mcp --figma-api
 # 연결 상태 확인
 claude mcp list
 ```
+</details>
+
+<details>
+<summary>📝 Notion 통합 설정</summary>
+
+#### Notion 통합 토큰 생성
+1. [Notion Integrations](https://www.notion.so/my-integrations) 페이지 이동
+2. **"New integration"** 클릭
+3. 통합 정보 입력:
+   - **Name**: "Claude MCP" (또는 원하는 이름)
+   - **Workspace**: 사용할 워크스페이스 선택
+   - **Content Capabilities**: Read, Update, Insert 권한 선택
+4. **Submit** 클릭하여 통합 생성
+5. **Internal Integration Token** 복사 (secret_으로 시작)
+
+#### 워크스페이스에 통합 연결
+1. Notion에서 사용할 페이지나 데이터베이스 열기
+2. 페이지 우상단 **"..."** → **"Connections"** 클릭
+3. 생성한 통합 선택하여 연결
+
+```bash
+# 위에서 복사한 토큰으로 교체
+claude mcp add notion-server --scope user npx @notionhq/notion-mcp-server -e NOTION_TOKEN=secret_YOUR_ACTUAL_TOKEN_HERE
+
+# 연결 상태 확인
+claude mcp list
+```
+</details>
 
 ### 설정 확인
 ```bash
@@ -98,6 +148,22 @@ claude mcp list  # User Scope 서버들이 모든 곳에서 보여야 함
 ```
 
 ## 구현된 MCP 서버 상세 가이드
+
+<details>
+<summary>📊 연결된 MCP 서버 현황</summary>
+
+| 서버명 | 상태 | 주요기능 | 범위 |
+|--------|------|----------|------|
+| 🗂️ filesystem | ✅ 연결됨 | 파일 시스템 관리 | User |
+| 🐙 github | ✅ 연결됨 | GitHub API 통합 | User |
+| 🧠 memory | ✅ 연결됨 | 대화 기록 유지 | User |
+| 🤔 sequential-thinking | ✅ 연결됨 | 복잡한 작업 분해 | User |
+| 🎨 figma-framelink | ✅ 연결됨 | 디자인-투-코드 | User |
+| 🌐 puppeteer-server | ✅ 연결됨 | 브라우저 자동화 | User |
+| 📝 notion-server | ✅ 연결됨 | Notion 워크스페이스 | User |
+
+**총 7개 서버 연결됨** | 모든 서버가 User Scope로 설정되어 모든 프로젝트에서 사용 가능
+</details>
 
 ### 🐙 GitHub MCP Server
 - **상태**: **연결됨**
@@ -170,11 +236,154 @@ claude mcp add figma-oauth --scope user "npx figma-developer-mcp --figma-oauth-t
 
 ### 개발 도구
 
-#### Browser Automation (Puppeteer)
-- **상태**:  **테스트 필요**
-- **기능**: 웹 자동화 기능
-- **GitHub**: [Browser MCP](https://github.com/adhikasp/browser-mcp)
-- **사용법**: 로컬 브라우저 자동화
+### 🌐 Puppeteer MCP Server (Browser Automation)
+- **상태**: **연결됨**
+- **패키지**: `@hisma/server-puppeteer`
+- **GitHub**: [Puppeteer MCP Server](https://github.com/hisma/server-puppeteer)
+- **기능**: 완전한 브라우저 자동화 및 웹 스크래핑
+
+<details>
+<summary>🚀 주요 기능</summary>
+
+**🔧 브라우저 제어:**
+- **페이지 네비게이션**: URL로 이동, 뒤로/앞으로 이동, 새로고침
+- **요소 상호작용**: 클릭, 텍스트 입력, 드롭다운 선택, 호버
+- **스크린샷**: 전체 페이지 또는 특정 요소 캡처 (PNG/JPEG)
+- **JavaScript 실행**: 브라우저 컨텍스트에서 커스텀 JS 코드 실행
+
+**📊 웹 스크래핑:**
+- **DOM 요소 추출**: CSS 셀렉터로 텍스트, 속성, HTML 콘텐츠 추출
+- **폼 자동화**: 로그인, 양식 작성, 제출 자동화
+- **페이지 대기**: 특정 요소나 조건까지 대기
+- **동적 콘텐츠**: JavaScript로 렌더링된 SPA 콘텐츠 스크래핑
+
+**🛠️ 고급 기능:**
+- **헤드리스/헤드풀 모드**: UI 표시 여부 선택
+- **모바일 에뮬레이션**: 다양한 디바이스 크기 시뮬레이션
+- **네트워크 제어**: 요청 인터셉트, 응답 모킹
+- **PDF 생성**: 웹 페이지를 PDF로 변환
+</details>
+
+<details>
+<summary>📋 사용 가능한 도구들</summary>
+
+1. **`puppeteer_navigate`**: 지정된 URL로 이동
+2. **`puppeteer_screenshot`**: 페이지 또는 요소 스크린샷 캡처
+3. **`puppeteer_click`**: CSS 셀렉터로 요소 클릭
+4. **`puppeteer_fill`**: 입력 필드에 텍스트 입력
+5. **`puppeteer_select`**: 드롭다운에서 값 선택
+6. **`puppeteer_hover`**: 요소에 마우스 호버
+7. **`puppeteer_evaluate`**: 브라우저에서 JavaScript 코드 실행
+8. **`puppeteer_get_content`**: 페이지의 HTML 콘텐츠 가져오기
+9. **`puppeteer_wait_for_selector`**: 특정 요소가 나타날 때까지 대기
+</details>
+
+<details>
+<summary>📝 사용 예시</summary>
+
+```bash
+# Claude에서 사용 예시:
+"네이버 메인페이지를 스크린샷으로 캡처해주세요"
+"이 사이트에서 제품 정보를 스크래핑해서 정리해주세요: https://example-shop.com"
+"구글에서 'Claude AI' 검색 결과를 캡처해주세요"
+"이 웹사이트의 로그인 폼을 자동으로 채워주세요"
+"이 페이지를 PDF로 변환해주세요"
+"동적으로 로드되는 콘텐츠를 기다린 후 스크래핑해주세요"
+```
+
+**⚡ 자동화 워크플로우 예시:**
+- 웹사이트 모니터링 및 변경 사항 감지
+- E-commerce 가격 추적 및 알림
+- 소셜 미디어 콘텐츠 자동 수집
+- 웹 애플리케이션 자동 테스트
+- 정기적인 웹사이트 스크린샷 수집
+</details>
+
+### 📝 Notion MCP Server
+- **상태**: **연결됨**
+- **패키지**: `@notionhq/notion-mcp-server`
+- **GitHub**: [Notion MCP Server](https://github.com/notionhq/notion-mcp-server)
+- **기능**: Notion 워크스페이스와의 완전한 통합
+
+<details>
+<summary>🚀 주요 기능</summary>
+
+**📊 페이지 및 데이터베이스 관리:**
+- **페이지 CRUD**: 페이지 생성, 읽기, 수정, 삭제
+- **데이터베이스 쿼리**: 복잡한 필터링 및 정렬 조건으로 데이터 검색
+- **블록 관리**: 텍스트, 이미지, 표, 코드 블록 등 추가/편집
+- **속성 관리**: 제목, 태그, 날짜, 체크박스 등 다양한 속성 처리
+
+**🔍 검색 및 분석:**
+- **전체 텍스트 검색**: 워크스페이스 전체에서 콘텐츠 검색
+- **메타데이터 추출**: 페이지 생성일, 수정일, 작성자 정보
+- **관계 분석**: 페이지 간 연결 및 백링크 추적
+- **댓글 시스템**: 페이지 댓글 읽기 및 작성
+
+**📝 콘텐츠 생성 자동화:**
+- **템플릿 기반 페이지 생성**: 일관된 형식의 문서 자동 생성
+- **bulk 작업**: 여러 페이지/항목을 한 번에 처리
+- **데이터 동기화**: 외부 소스에서 Notion으로 데이터 자동 동기화
+- **워크플로우 자동화**: 조건부 업데이트 및 알림
+</details>
+
+<details>
+<summary>📋 사용 가능한 도구들</summary>
+
+**사용자 관리:**
+- `API-get-users`: 워크스페이스 사용자 목록 조회
+- `API-get-user`: 특정 사용자 정보 조회
+- `API-get-self`: 현재 봇 사용자 정보 조회
+
+**검색:**
+- `API-post-search`: 제목으로 페이지/데이터베이스 검색
+
+**페이지 관리:**
+- `API-retrieve-a-page`: 페이지 내용 및 속성 조회
+- `API-patch-page`: 페이지 속성 업데이트
+- `API-post-page`: 새 페이지 생성
+
+**블록 관리:**
+- `API-get-block-children`: 블록의 하위 콘텐츠 조회
+- `API-patch-block-children`: 블록에 새로운 콘텐츠 추가
+- `API-retrieve-a-block`: 특정 블록 정보 조회
+- `API-update-a-block`: 블록 내용 수정
+- `API-delete-a-block`: 블록 삭제
+
+**데이터베이스:**
+- `API-post-database-query`: 데이터베이스 쿼리 (필터링, 정렬)
+- `API-create-a-database`: 새 데이터베이스 생성
+- `API-update-a-database`: 데이터베이스 구조 수정
+- `API-retrieve-a-database`: 데이터베이스 정보 조회
+
+**댓글 시스템:**
+- `API-retrieve-a-comment`: 페이지 댓글 조회
+- `API-create-a-comment`: 새 댓글 작성
+
+**속성 관리:**
+- `API-retrieve-a-page-property`: 페이지 속성값 조회
+</details>
+
+<details>
+<summary>📝 사용 예시</summary>
+
+```bash
+# Claude에서 사용 예시:
+"내 Notion 워크스페이스에서 '프로젝트' 데이터베이스의 모든 항목을 보여주세요"
+"새로운 회의록 페이지를 생성하고 오늘 날짜로 설정해주세요"
+"'개발' 태그가 있는 모든 페이지를 찾아서 우선순위별로 정렬해주세요"
+"이 페이지에 새로운 할 일 체크리스트를 추가해주세요"
+"지난주에 수정된 모든 문서를 찾아주세요"
+"이 템플릿을 사용해서 10개의 새로운 제품 페이지를 생성해주세요"
+```
+
+**⚡ 자동화 워크플로우 예시:**
+- 일일 업무 보고서 자동 생성
+- 프로젝트 상태 업데이트 자동화
+- 외부 데이터를 Notion 데이터베이스로 자동 동기화
+- 마감일 알림 및 상태 변경 자동화
+- 회의록 템플릿 자동 생성 및 참석자 태그
+</details>
 
 #### Fetch Server
 - **상태**: ⚠️ **패키지 미존재** (`@modelcontextprotocol/server-fetch` 찾을 수 없음)
@@ -262,4 +471,4 @@ claude mcp list  # ✓ Connected 또는 ✗ Failed 표시
 
 **마지막 업데이트**: 2025-08-09  
 **테스트 환경**: Windows, Claude CLI  
-**검증된 서버 수**: 5개 (filesystem, github, memory, sequential-thinking, figma-framelink)
+**검증된 서버 수**: 7개 (filesystem, github, memory, sequential-thinking, figma-framelink, puppeteer-server, notion-server)
