@@ -39,6 +39,17 @@ claude mcp add fetch --scope user npx @modelcontextprotocol/server-fetch
 
 # 5. 순차적 사고 서버 - 복잡한 작업을 단계별로 분해
 claude mcp add sequential-thinking --scope user npx @modelcontextprotocol/server-sequential-thinking
+
+# 6. Context7 서버 - 최신 라이브러리 문서 실시간 제공
+npm install -g @upstash/context7-mcp
+claude mcp add context7 --scope user context7-mcp
+
+# 7. Magic 서버 - AI 기반 UI 컴포넌트 생성 (API 키 필요)
+npm install -g @21st-dev/magic
+claude mcp add magic --scope user magic
+
+# 8. Notion 서버 - Notion 워크스페이스 통합 (즉시 사용 가능)
+claude mcp add notion --scope user https://mcp.notion.com/mcp
 ```
 
 ### 4단계: 설정 확인
@@ -65,6 +76,18 @@ github: npx @modelcontextprotocol/server-github - ✓ Connected
 memory: npx @modelcontextprotocol/server-memory - ✓ Connected
 fetch: npx @modelcontextprotocol/server-fetch - ✓ Connected
 sequential-thinking: npx @modelcontextprotocol/server-sequential-thinking - ✓ Connected
+context7: context7-mcp - ✓ Connected
+magic: magic - ✓ Connected
+notion: https://mcp.notion.com/mcp (HTTP) - ✓ Connected
+```
+
+### 추가 설정 (Magic 서버)
+Magic 서버를 사용하려면 API 키가 필요합니다:
+```bash
+# 1. https://21st.dev/magic/console에서 API 키 발급
+# 2. 환경 변수 설정
+export TWENTY_FIRST_API_KEY="your-api-key-here"  # Linux/macOS
+set TWENTY_FIRST_API_KEY=your-api-key-here       # Windows
 ```
 
 ## 추가 서버 설치 (선택사항)
@@ -160,6 +183,8 @@ sudo npm install -g @modelcontextprotocol/server-github
  **웹 스크래핑**: 웹사이트 콘텐츠 분석  
  **프로젝트 기억**: 대화 내용과 컨텍스트 유지  
  **복잡한 작업**: 단계별 분해하여 체계적 처리  
+ **실시간 문서**: 최신 라이브러리 문서와 코드 예시 자동 제공  
+ **UI 생성**: 자연어 설명만으로 모던한 UI 컴포넌트 즉시 생성  
 
 ---
 
