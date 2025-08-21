@@ -1,9 +1,8 @@
 # 📝 Notion MCP Server
 
-**패키지**: HTTP 기반 공식 서버  
-**URL**: `https://mcp.notion.com/mcp`  
-**GitHub**: [Notion MCP Documentation](https://github.com/modelcontextprotocol/specification)  
-**상태**: ✅ **연결됨**  
+**패키지**: `@notionhq/notion-mcp-server` (공식 패키지)  
+**GitHub**: [Notion MCP Official](https://github.com/notionhq/notion-mcp-server)  
+**상태**: ✅ **연결됨** (테스트 완료)  
 
 ## 개요
 
@@ -11,20 +10,68 @@ Notion MCP Server는 Claude가 Notion 워크스페이스와 완전히 통합되�
 
 ## 설치 및 설정
 
-### 1. MCP 서버 추가 (즉시 사용 가능)
+### 1. Notion Integration 생성 및 API 토큰 발급
+1. https://www.notion.so/my-integrations 접속
+2. **"New integration"** 클릭
+3. Integration 이름 입력 (예: "Claude MCP")
+4. 원하는 워크스페이스 선택
+5. Capabilities 설정:
+   - ✅ Read content
+   - ✅ Update content
+   - ✅ Insert content
+6. **"Submit"** 클릭
+7. **"Internal Integration Token"** 복사 (형식: `secret_...`)
+
+### 2. 워크스페이스에 Integration 연결
+- 사용하려는 Notion 페이지로 이동
+- 페이지 상단 **"..."** 메뉴 클릭
+- **"Add connections"** 선택
+- 생성한 Integration 선택하여 연결
+
+### 3. MCP 서버 패키지 설치
 ```bash
-# HTTP 기반 공식 서버 - 토큰 불필요
-claude mcp add notion --scope user https://mcp.notion.com/mcp
+# 공식 Notion MCP 서버 설치
+npm install -g @notionhq/notion-mcp-server
 ```
 
-### 2. 연결 확인
+### 4. MCP 서버 추가
+```bash
+# API 키와 함께 서버 추가
+claude mcp add notion --scope user npx @notionhq/notion-mcp-server -e NOTION_API_KEY=YOUR_TOKEN
+
+# 또는 시스템 환경 변수 설정 후
+setx NOTION_API_KEY "YOUR_TOKEN"  # Windows
+export NOTION_API_KEY="YOUR_TOKEN"  # Linux/macOS
+claude mcp add notion --scope user npx @notionhq/notion-mcp-server
+```
+
+### 5. 연결 확인
 ```bash
 claude mcp list
-# notion: https://mcp.notion.com/mcp (HTTP) - ✓ Connected 확인
+# notion: npx @notionhq/notion-mcp-server - ✓ Connected 확인
 ```
 
-### 3. 즉시 사용 가능!
-별도의 API 키나 토큰 설정 없이 바로 Notion 워크스페이스에 접근할 수 있습니다.
+## ✅ 실제 테스트 결과
+
+### 테스트 워크스페이스: "Uni-con"
+- **API 연결**: ✅ 정상 작동
+- **데이터 검색**: ✅ 성공적으로 워크스페이스 내용 조회
+- **페이지 수**: 10개 이상의 페이지 및 데이터베이스 발견
+
+### 발견된 주요 내용
+#### 🦄 메인 프로젝트 페이지
+- **Unicon**: 메인 프로젝트 페이지
+- **BE**: 백엔드 관련 페이지
+
+#### 📊 데이터베이스들
+- **일정표**: 프로젝트 스케줄 관리
+  - 기능 구현 deadline (8/27)
+  - 개발 Deadline (8/29)
+
+#### 🏠 기능 페이지들
+- **룸메이트 찾기**: 주거 관련 기능
+- **프로젝트 관리**: Wireframe, AI 개발, 계약서 검증
+- **회의록**: 8/14 회의 기록
 
 ## 주요 기능
 

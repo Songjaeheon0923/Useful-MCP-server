@@ -1,8 +1,8 @@
 # 🎨 Figma MCP Server (Framelink)
 
-**패키지**: `figma-developer-mcp`  
-**GitHub**: [Figma Context MCP](https://github.com/GLips/Figma-Context-MCP)  
-**상태**: ✅ **연결됨**  
+**패키지**: `mcp-figma`  
+**GitHub**: [mcp-figma npm](https://www.npmjs.com/package/mcp-figma)  
+**상태**: ✅ **연결됨** (테스트 완료)  
 
 ## 개요
 
@@ -37,26 +37,44 @@ echo 'export FIGMA_ACCESS_TOKEN="figd_your-token-here"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### 2. MCP 서버 추가
+### 2. MCP 서버 패키지 설치
 ```bash
-# 기본 설정
-claude mcp add figma-framelink --scope user "npx figma-developer-mcp --figma-api-key=YOUR_TOKEN --stdio"
-
-# JSON 출력 형식 (구조화된 분석용)
-claude mcp add figma-json --scope user "npx figma-developer-mcp --figma-api-key=YOUR_TOKEN --json --stdio"
-
-# 이미지 다운로드 스킵 (성능 최적화)
-claude mcp add figma-light --scope user "npx figma-developer-mcp --figma-api-key=YOUR_TOKEN --skip-image-downloads --stdio"
-
-# OAuth 토큰 사용 (팀/조직 계정용)
-claude mcp add figma-oauth --scope user "npx figma-developer-mcp --figma-oauth-token=YOUR_OAUTH_TOKEN --stdio"
+# mcp-figma 패키지 전역 설치
+npm install -g mcp-figma
 ```
 
-### 3. 연결 확인
+### 3. MCP 서버 추가
+```bash
+# 환경 변수로 API 키 설정
+claude mcp add figma --scope user npx mcp-figma -e FIGMA_API_KEY=YOUR_TOKEN
+
+# 또는 시스템 환경 변수 설정 후
+setx FIGMA_API_KEY "YOUR_TOKEN"  # Windows
+export FIGMA_API_KEY="YOUR_TOKEN"  # Linux/macOS
+claude mcp add figma --scope user npx mcp-figma
+```
+
+### 4. 연결 확인
 ```bash
 claude mcp list
-# figma-framelink: npx figma-developer-mcp ... - ✓ Connected 확인
+# figma: npx mcp-figma - ✓ Connected 확인
 ```
+
+## ✅ 실제 테스트 결과
+
+### 테스트 파일: Uni-con 프로젝트
+- **파일 ID**: `EYQU5IrBSVEHOmlcqFYGYA`
+- **파일 URL**: `https://www.figma.com/design/EYQU5IrBSVEHOmlcqFYGYA/Uni-con`
+- **데이터 크기**: 약 8.4MB
+- **테스트 결과**: ✅ 성공적으로 디자인 데이터 추출
+
+### 발견된 화면 구조
+- **홈 화면**: 메인 랜딩 페이지
+- **로그인/회원가입**: 사용자 인증 화면
+- **계약서 분석**: 의심 조항 질문 리스트
+- **룸메이트 매칭**: 프로필 및 매칭 시스템
+- **원룸 정보**: 매물 상세 정보 화면
+- **동네지도**: 지역별 매물 표시
 
 ## 주요 기능
 

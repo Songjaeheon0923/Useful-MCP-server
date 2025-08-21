@@ -14,6 +14,16 @@
 4. 토큰 복사
 
 ### 2단계: 환경 변수 설정
+
+**방법 1: .env 파일 사용 (권장)**
+```bash
+# 프로젝트에 .env 파일이 있으면 토큰을 입력하세요:
+# 파일을 열어서 다음 라인을 수정:
+GITHUB_PERSONAL_ACCESS_TOKEN=your-github-token-here
+TWENTY_FIRST_API_KEY=your-magic-api-key-here
+```
+
+**방법 2: 시스템 환경 변수**
 ```bash
 # Windows (PowerShell/CMD)
 setx GITHUB_PERSONAL_ACCESS_TOKEN "your-github-token-here"
@@ -34,8 +44,8 @@ claude mcp add github --scope user npx @modelcontextprotocol/server-github
 # 3. 메모리 서버 - 대화 기록 및 컨텍스트 유지
 claude mcp add memory --scope user npx @modelcontextprotocol/server-memory
 
-# 4. 웹 페치 서버 - 웹 콘텐츠 가져오기 및 분석
-claude mcp add fetch --scope user npx @modelcontextprotocol/server-fetch
+# 4. 웹 페치 서버 - 웹 콘텐츠 가져오기 및 분석 (TypeScript 기반)
+claude mcp add fetch-typescript --scope user npx mcp-server-fetch-typescript
 
 # 5. 순차적 사고 서버 - 복잡한 작업을 단계별로 분해
 claude mcp add sequential-thinking --scope user npx @modelcontextprotocol/server-sequential-thinking
@@ -44,12 +54,17 @@ claude mcp add sequential-thinking --scope user npx @modelcontextprotocol/server
 npm install -g @upstash/context7-mcp
 claude mcp add context7 --scope user context7-mcp
 
-# 7. Magic 서버 - AI 기반 UI 컴포넌트 생성 (API 키 필요)
+# 7. Magic 서버 - AI 기반 UI 컴포넌트 생성  (API 키 필요)
 npm install -g @21st-dev/magic
 claude mcp add magic --scope user magic
 
-# 8. Notion 서버 - Notion 워크스페이스 통합 (즉시 사용 가능)
-claude mcp add notion --scope user https://mcp.notion.com/mcp
+# 8. Notion 서버 - Notion 워크스페이스 통합 (API 키 필요)
+npm install -g @notionhq/notion-mcp-server
+claude mcp add notion --scope user npx @notionhq/notion-mcp-server
+
+# 9. Figma 서버 - Figma 디자인 파일 데이터 추출 (API 키 필요)
+npm install -g mcp-figma
+claude mcp add figma --scope user npx mcp-figma
 ```
 
 ### 4단계: 설정 확인
@@ -66,28 +81,55 @@ cd /tmp
 claude mcp list
 ```
 
-## 예상 결과
+## 예상 결과 (모든 서버 연결 성공)
 설정이 완료되면 다음과 같이 표시됩니다:
 ```
 Checking MCP server health...
 
-filesystem: npx @modelcontextprotocol/server-filesystem C:\ - ✓ Connected
-github: npx @modelcontextprotocol/server-github - ✓ Connected  
 memory: npx @modelcontextprotocol/server-memory - ✓ Connected
-fetch: npx @modelcontextprotocol/server-fetch - ✓ Connected
 sequential-thinking: npx @modelcontextprotocol/server-sequential-thinking - ✓ Connected
-context7: context7-mcp - ✓ Connected
-magic: magic - ✓ Connected
-notion: https://mcp.notion.com/mcp (HTTP) - ✓ Connected
+filesystem: npx @modelcontextprotocol/server-filesystem C:/Program Files/Git/ - ✓ Connected
+github: npx @modelcontextprotocol/server-github - ✓ Connected
+fetch-typescript: npx mcp-server-fetch-typescript - ✓ Connected
+context7: npx @upstash/context7-mcp - ✓ Connected
+magic: npx @21st-dev/magic - ✓ Connected
+notion: npx @notionhq/notion-mcp-server - ✓ Connected
+figma: npx mcp-figma - ✓ Connected
 ```
 
-### 추가 설정 (Magic 서버)
-Magic 서버를 사용하려면 API 키가 필요합니다:
+✅ **총 9개 서버 모두 연결 성공!**
+
+### 추가 설정 (API 키가 필요한 서버들) ✅ **테스트 완료**
+
+#### Magic 서버
 ```bash
 # 1. https://21st.dev/magic/console에서 API 키 발급
 # 2. 환경 변수 설정
 export TWENTY_FIRST_API_KEY="your-api-key-here"  # Linux/macOS
 set TWENTY_FIRST_API_KEY=your-api-key-here       # Windows
+```
+
+#### Notion 서버
+```bash
+# 1. https://www.notion.so/my-integrations에서 Integration 생성
+# 2. "Internal Integration Token" 복사
+# 3. 환경 변수 설정
+export NOTION_API_KEY="secret_your-token-here"  # Linux/macOS
+set NOTION_API_KEY=secret_your-token-here       # Windows
+# 4. 워크스페이스 페이지에 Integration 연결
+```
+
+#### Figma 서버
+```bash
+# 1. Figma Settings > Personal Access Tokens에서 토큰 생성
+# 2. 환경 변수 설정
+export FIGMA_API_KEY="figd_your-token-here"  # Linux/macOS
+set FIGMA_API_KEY=figd_your-token-here       # Windows
+
+# 검증된 기능 (2025-08-11):
+# - 서버 연결: 정상 (735ms)
+# - Logo Search: GitHub 아이콘 JSX 생성 성공
+# - API 통신: 21st.dev와 정상 연동
 ```
 
 ## 추가 서버 설치 (선택사항)
@@ -115,6 +157,37 @@ claude mcp add slack --scope user npx @modelcontextprotocol/server-slack
 # Puppeteer 브라우저 서버
 claude mcp add puppeteer --scope user npx @modelcontextprotocol/server-puppeteer
 ```
+
+## 환경 변수 파일 (.env) 사용법
+
+이 프로젝트에는 `.env` 파일이 포함되어 있어 모든 API 키와 토큰을 안전하게 관리할 수 있습니다.
+
+### .env 파일 설정
+```bash
+# .env 파일을 텍스트 에디터로 열어서 필요한 키들을 입력하세요:
+GITHUB_PERSONAL_ACCESS_TOKEN=ghp_your_actual_token_here
+TWENTY_FIRST_API_KEY=your_magic_api_key_here
+FIGMA_API_KEY=your_figma_api_key_here
+```
+
+### Windows에서 .env 파일 로드
+```bash
+# 명령 프롬프트에서 환경 변수 로드
+for /f "tokens=1,2 delims==" %i in (.env) do set %i=%j
+
+# 또는 PowerShell에서
+Get-Content .env | ForEach-Object { $name, $value = $_ -split '=', 2; [Environment]::SetEnvironmentVariable($name, $value) }
+```
+
+### Linux/macOS에서 .env 파일 로드
+```bash
+export $(cat .env | xargs)
+```
+
+### 보안 주의사항
+- `.env` 파일은 `.gitignore`에 포함되어 Git에 업로드되지 않습니다
+- 실제 토큰을 입력할 때 따옴표는 사용하지 마세요
+- 토큰이 노출되지 않도록 주의하세요
 
 ## 유용한 관리 명령어
 

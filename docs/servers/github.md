@@ -28,6 +28,16 @@ claude mcp add github --scope user npx @modelcontextprotocol/server-github
 4. 생성된 토큰 복사
 
 #### 환경 변수 설정
+
+**방법 1: .env 파일 사용 (권장)**
+```bash
+# 프로젝트 루트에 .env 파일 생성
+GITHUB_PERSONAL_ACCESS_TOKEN=your-github-token-here
+TWENTY_FIRST_API_KEY=your-magic-api-key-here
+FIGMA_API_KEY=your-figma-api-key-here
+```
+
+**방법 2: 시스템 환경 변수**
 ```bash
 # Windows에서 영구적으로 설정
 setx GITHUB_PERSONAL_ACCESS_TOKEN "your-github-token-here"
@@ -44,6 +54,20 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="your-github-token-here"
 # 영구 설정 (Linux/macOS)
 echo 'export GITHUB_PERSONAL_ACCESS_TOKEN="your-github-token-here"' >> ~/.bashrc
 source ~/.bashrc
+```
+
+**방법 3: MCP 설정 파일에 직접 추가**
+```json
+{
+  "github": {
+    "type": "stdio",
+    "command": "npx",
+    "args": ["@modelcontextprotocol/server-github"],
+    "env": {
+      "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_your_token_here"
+    }
+  }
+}
 ```
 
 ### 3. 연결 확인
@@ -105,13 +129,20 @@ claude mcp list
 ### 기본 사용법
 ```bash
 # Claude에서 사용 예시:
+"내 GitHub 레포지토리 목록을 보여주세요"
+"Songjaeheon0923/Data-Structure 레포지토리의 파일 구조를 분석해주세요"
 "이 리포지토리의 모든 열린 이슈를 우선순위별로 정렬해서 보여주세요"
 "main 브랜치에서 feature/new-auth 브랜치를 생성해주세요"
 "이 PR을 검토하고 코드 리뷰를 작성해주세요"
 "최근 일주일간의 커밋을 분석해서 변경사항을 요약해주세요"
-"버그 리포트 이슈를 생성하고 적절한 라벨을 추가해주세요"
-"이 파일을 여러 브랜치에 동시에 업데이트해주세요"
+"Microsoft/TypeScript 레포지토리의 최신 릴리스 정보를 알려주세요"
 ```
+
+### 검증된 접근 가능 레포지토리 유형
+- ✅ **개인 소유 레포지토리**: 완전한 읽기/쓰기 권한
+- ✅ **참여 중인 조직 레포지토리**: 권한에 따른 접근
+- ✅ **공개 레포지토리**: 전 세계 모든 공개 프로젝트 읽기
+- ✅ **Private 레포지토리**: 적절한 권한이 있는 경우 접근 가능
 
 ### 고급 워크플로우
 ```bash
@@ -173,5 +204,6 @@ claude mcp add github --scope user npx @modelcontextprotocol/server-github
 
 ---
 
-**마지막 업데이트**: 2025-08-09  
-**테스트 환경**: Windows, Claude CLI
+**마지막 업데이트**: 2025-08-21  
+**테스트 환경**: Windows, Claude CLI  
+**검증 상태**: ✅ 개인/조직/공개 레포지토리 접근 검증 완료
