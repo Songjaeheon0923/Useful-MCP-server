@@ -77,6 +77,11 @@ $RECYCLE.BIN/
 *.old
 *.orig
 
+# MCP 설정 백업 파일들 (민감한 정보 포함)
+mcp-config-backup.json
+MCP_SETUP_BACKUP.md
+claude-config-backup.*
+
 # 컴파일된 바이너리 파일들
 *.exe
 *.dll

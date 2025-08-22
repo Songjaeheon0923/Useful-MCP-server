@@ -34,9 +34,25 @@ echo 'export GITHUB_PERSONAL_ACCESS_TOKEN="your-github-token-here"' >> ~/.bashrc
 ```
 
 ### 3단계: MCP 서버 설치 (User Scope - 모든 프로젝트에서 사용)
+
+#### 3-1. 패키지 글로벌 설치
+```bash
+# 모든 MCP 서버 패키지를 먼저 설치
+npm install -g @modelcontextprotocol/server-filesystem
+npm install -g @modelcontextprotocol/server-github
+npm install -g @modelcontextprotocol/server-memory
+npm install -g @modelcontextprotocol/server-sequential-thinking
+npm install -g mcp-server-fetch-typescript
+npm install -g @upstash/context7-mcp
+npm install -g @21st-dev/magic
+npm install -g @notionhq/notion-mcp-server
+npm install -g mcp-figma
+```
+
+#### 3-2. MCP 서버 추가
 ```bash
 # 1. 파일시스템 서버 - 파일 읽기/쓰기/편집
-claude mcp add filesystem --scope user npx @modelcontextprotocol/server-filesystem C:\
+claude mcp add filesystem --scope user npx @modelcontextprotocol/server-filesystem "C:\\"
 
 # 2. GitHub 서버 - 리포지토리, 이슈, PR 관리  
 claude mcp add github --scope user npx @modelcontextprotocol/server-github
@@ -51,19 +67,15 @@ claude mcp add fetch-typescript --scope user npx mcp-server-fetch-typescript
 claude mcp add sequential-thinking --scope user npx @modelcontextprotocol/server-sequential-thinking
 
 # 6. Context7 서버 - 최신 라이브러리 문서 실시간 제공
-npm install -g @upstash/context7-mcp
-claude mcp add context7 --scope user context7-mcp
+claude mcp add context7 --scope user npx @upstash/context7-mcp
 
-# 7. Magic 서버 - AI 기반 UI 컴포넌트 생성  (API 키 필요)
-npm install -g @21st-dev/magic
-claude mcp add magic --scope user magic
+# 7. Magic 서버 - AI 기반 UI 컴포넌트 생성 (API 키 필요)
+claude mcp add magic --scope user npx @21st-dev/magic
 
 # 8. Notion 서버 - Notion 워크스페이스 통합 (API 키 필요)
-npm install -g @notionhq/notion-mcp-server
 claude mcp add notion --scope user npx @notionhq/notion-mcp-server
 
 # 9. Figma 서버 - Figma 디자인 파일 데이터 추출 (API 키 필요)
-npm install -g mcp-figma
 claude mcp add figma --scope user npx mcp-figma
 ```
 
@@ -86,15 +98,15 @@ claude mcp list
 ```
 Checking MCP server health...
 
+filesystem: npx @modelcontextprotocol/server-filesystem C:\ - ✓ Connected
+github: npx @modelcontextprotocol/server-github - ✓ Connected
 memory: npx @modelcontextprotocol/server-memory - ✓ Connected
 sequential-thinking: npx @modelcontextprotocol/server-sequential-thinking - ✓ Connected
-filesystem: npx @modelcontextprotocol/server-filesystem C:/Program Files/Git/ - ✓ Connected
-github: npx @modelcontextprotocol/server-github - ✓ Connected
 fetch-typescript: npx mcp-server-fetch-typescript - ✓ Connected
+figma: npx mcp-figma - ✓ Connected
 context7: npx @upstash/context7-mcp - ✓ Connected
 magic: npx @21st-dev/magic - ✓ Connected
 notion: npx @notionhq/notion-mcp-server - ✓ Connected
-figma: npx mcp-figma - ✓ Connected
 ```
 
 ✅ **총 9개 서버 모두 연결 성공!**

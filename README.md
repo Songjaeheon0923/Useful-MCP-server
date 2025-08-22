@@ -31,35 +31,37 @@ FIGMA_API_KEY=your-figma-api-key-here
 다음 명령어들로 검증된 MCP 서버들을 User Scope으로 설정할 수 있습니다:
 
 ```bash
-# 1. 파일시스템 서버 (파일 읽기/쓰기) 
-claude mcp add filesystem --scope user npx @modelcontextprotocol/server-filesystem C:\
-
-# 2. GitHub 서버 (리포지토리 관리) 
-claude mcp add github --scope user npx @modelcontextprotocol/server-github
-
-# 3. 메모리 서버 (대화 기록 유지) 
-claude mcp add memory --scope user npx @modelcontextprotocol/server-memory
-
-# 4. 웹 페치 서버 (웹 콘텐츠 가져오기) 
-claude mcp add fetch-typescript --scope user npx mcp-server-fetch-typescript
-
-# 5. 순차적 사고 서버 (복잡한 작업 분해) 
-claude mcp add sequential-thinking --scope user npx @modelcontextprotocol/server-sequential-thinking
-
-# 6. Context7 서버 (최신 라이브러리 문서) 
+# 1. 패키지 설치 (글로벌)
+npm install -g @modelcontextprotocol/server-filesystem
+npm install -g @modelcontextprotocol/server-github  
+npm install -g @modelcontextprotocol/server-memory
+npm install -g @modelcontextprotocol/server-sequential-thinking
+npm install -g mcp-server-fetch-typescript
 npm install -g @upstash/context7-mcp
-claude mcp add context7 --scope user context7-mcp
-
-# 7. Magic 서버 (AI 기반 UI 컴포넌트 생성) 
 npm install -g @21st-dev/magic
-claude mcp add magic --scope user magic
+npm install -g @notionhq/notion-mcp-server
+npm install -g mcp-figma
 
-# 8. Notion 서버 (Notion 워크스페이스 통합) 
-claude mcp add notion --scope user https://mcp.notion.com/mcp
+# 2. 환경 변수 설정 (Windows)
+set GITHUB_PERSONAL_ACCESS_TOKEN=your-github-token-here
+set TWENTY_FIRST_API_KEY=your-magic-api-key-here
+set FIGMA_API_KEY=your-figma-api-key-here
+set NOTION_API_KEY=your-notion-api-key-here
+
+# 3. MCP 서버 추가
+claude mcp add filesystem --scope user npx @modelcontextprotocol/server-filesystem "C:\\"
+claude mcp add github --scope user npx @modelcontextprotocol/server-github
+claude mcp add memory --scope user npx @modelcontextprotocol/server-memory
+claude mcp add sequential-thinking --scope user npx @modelcontextprotocol/server-sequential-thinking
+claude mcp add fetch-typescript --scope user npx mcp-server-fetch-typescript
+claude mcp add context7 --scope user npx @upstash/context7-mcp
+claude mcp add magic --scope user npx @21st-dev/magic
+claude mcp add notion --scope user npx @notionhq/notion-mcp-server
+claude mcp add figma --scope user npx mcp-figma
 ```
 
-**토큰이 필요한 서버들**: GitHub, Magic, Figma - 각 서버 문서에서 토큰 생성 방법 확인  
-**즉시 사용 가능**: Notion (HTTP 서버, 별도 토큰 불필요)
+**토큰이 필요한 서버들**: GitHub, Magic, Figma, Notion - 각 서버 문서에서 토큰 생성 방법 확인  
+**즉시 사용 가능**: Filesystem, Memory, Sequential-thinking, Fetch-typescript, Context7
 
 **Magic 서버 추가 설정** ✅ **테스트 완료**:
 ```bash
@@ -79,6 +81,11 @@ set TWENTY_FIRST_API_KEY=your-api-key-here       # Windows
 claude mcp list
 # 모든 서버가 "✓ Connected" 상태인지 확인
 ```
+
+### 🔧 백업 및 복원
+설치 완료 후 설정을 백업하거나 다른 환경에서 복원하려면:
+- **백업 파일**: `mcp-config-backup.json` (설정 백업)
+- **복원 가이드**: `MCP_SETUP_BACKUP.md` (상세한 복원 방법)
 
 ## 📋 구현된 MCP 서버들
 
@@ -138,7 +145,9 @@ claude mcp remove <서버이름> -s user
 
 ## 📊 프로젝트 상태
 
-**마지막 업데이트**: 2025-08-21  
-**테스트 환경**: Windows, Claude CLI  
+**마지막 업데이트**: 2025-08-22  
+**테스트 환경**: Windows, Claude CLI 1.0.88  
 **설치된 서버 수**: 9개 (연결됨: 9개, 실패: 0개)  
+**검증된 설치 방법**: ✅ 완전 자동화  
+**백업 시스템**: ✅ 설정 백업 및 복원 가이드 제공  
 **실험적 서버 수**: 5+개  
